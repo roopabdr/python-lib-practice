@@ -1,0 +1,89 @@
+conda create -n tea_facts python=3 --> this creates a brand new evironment and installs python 3 all over again and several other libraries
+--> this way you can create multiple environments for projects with different setup
+
+--> once the environment is crated - activate the same as below
+
+conda activate tea_facts
+
+--> above command will change the command prompt to something like (tea_fact) "" E:\Udacity\Python Practice\python lib practice> "".
+--> Now you're inside the newly created environment tea_facts
+--> You can now install any specific libraries inside this environment --> which can be shared for any project created within this environment
+
+
+--> In order to see the list of packages installed on a given environment 
+	--> activate the environment
+	--> this gets into environment specific prompt
+	--> then type "" conda list ""
+	--> this lists all the packages installed
+	
+--> installing python libs such as numpy, pandas, and matplotlib
+	conda install numpy pandas matplotlib
+	
+--> check if the above is installed using "" conda list ""
+
+
+--> next, install jupyter notebooks as below
+	conda install jupyter notebook
+	
+--> check if the above is installed using "" conda list ""
+
+
+
+To avoid errors later, it's best to update all the packages in the default environment. Open the Anaconda Prompt application. In the prompt, run the following commands:
+
+conda upgrade conda
+conda upgrade --all
+
+
+
+
+Most of the commands are pretty intuitive. To uninstall, use conda remove package_name. 
+To update a package conda update package_name. If you want to update all packages in an environment, which is often useful, use conda update --all. 
+And finally, to list installed packages, it's conda list which you've seen before.
+
+
+If you don't know the exact name of the package you're looking for, you can try searching with conda search *search_term*. 
+For example, I know I want to install Beautiful Soup, but I'm not sure of the exact package name. 
+So, I try conda search *beautifulsoup*. Note that your shell might expand the wildcard * before running the conda command. 
+To fix this, wrap the search string in single or double quotes like conda search '*beautifulsoup*'.
+
+
+
+Managing environments
+As I mentioned before, conda can be used to create environments to isolate your projects. 
+To create an environment, use conda create -n env_name list of packages in your terminal. 
+Here -n env_name sets the name of your environment (-n for name) and list of packages is the list of packages you want installed in the environment. 
+For example, to create an environment named my_env and install numpy in it, type conda create -n my_env numpy.
+
+to leave the environment, type source deactivate (on OSX/Linux). On Windows, use conda deactivate.
+
+Saving and loading environments
+A really useful feature is sharing environments so others can install all the packages used in your code, with the correct versions. 
+You can save the packages to a YAML file with conda env export > environment.yaml. 
+The first part conda env export writes out all the packages in the environment, including the Python version.
+
+To create an environment from an environment file use conda env create -f environment.yaml. 
+This will create a new environment with the same name listed in environment.yaml.
+
+
+Listing environments
+If you forget what your environments are named (happens to me sometimes), use conda env list to list out all the environments you've created. 
+You should see a list of environments, there will be an asterisk next to the environment you're currently in. 
+The default environment, the environment used when you aren't in one, is called root.
+
+Removing environments
+If there are environments you don't use anymore, conda env remove -n env_name will remove the specified environment (here, named env_name).
+
+****************************************************************
+Launch Jupyter notebook from anaconda prompt with the command "jupyter notebook" :: http://localhost:8888
+
+**** You can also launch jupter notebook from within your specific environment as per below note::::
+You should consider installing Notebook Conda to help manage your environments. Run the following command:
+
+conda install nb_conda
+
+Then if you run the notebook server from a conda environment, you'll also have access to the "Conda" tab shown below. Here you can manage your environments from within Jupyter. You can create new environments, install packages, update packages, export environments and more.
+
+Additionally, with nb_conda installed you will be able to access any of your conda environments when choosing a kernel.
+
+You can shutdown the entire server by pressing control + C twice in the terminal. Again, this will immediately shutdown all the running notebooks, so make sure your work is saved!
