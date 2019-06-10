@@ -1,0 +1,4 @@
+Histograms
+A histogram is used to plot the distribution of a numeric variable. It's the quantitative version of the bar chart. However, rather than plot one bar for each unique numeric value, values are grouped into continuous bins, and one bar for each bin is plotted depicting the number. For instance, using the default settings for matplotlib's hist function:
+
+plt.hist(data = df, x = 'num_var')
