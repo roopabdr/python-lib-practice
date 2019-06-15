@@ -1,0 +1,65 @@
+let lastResponse = undefined;
+
+function doMathCheck() {
+  fetch('/run', {credentials:'include'} ).then(function(response) {
+    return response.json();
+  }).then(function(jsonResponse) {
+    const mustRefresh = ((lastResponse === undefined) || (lastResponse !== jsonResponse));
+    if (mustRefresh) {
+      lastResponse = jsonResponse;
+      const validations = jsonResponse.validations;
+      let final = [];
+      let color, solution;
+      for (let validation of validations) {
+        if (validation.label !== undefined) {
+          color = 'neutral';
+        } else {
+          color = (validation.validated ? 'correct' : 'incorrect');
+        }
+        solution = (validation.validated ? 
+                    '<div class="solution" id="solution_' + validation.index + '">' + 
+                    'Compare your solution with the instructor\'s:' + ' <div id="solution_sub_' + validation.index + '"></div>' : '');
+        final.push('<div class="math ' + color + '" id="math_' + validation.index + '"></div>\n' + solution + '</div>\n');
+      }
+      const finalStr = final.join('');
+      const element = document.getElementById('math');
+      element.innerHTML = finalStr;
+
+      let mathId, mathElement, answerId, answerElement, answerSubId, answerSubElement;
+      for (let validation of validations) {
+        mathId = 'math_' + validation.index;
+        mathElement = document.getElementById(mathId);
+        //console.log('validation:',validation);
+        if (validation.label) {
+          mathElement.innerHTML = validation.label;
+        } else {
+          if (validation.expression.indexOf('Expression not yet entered') > -1) {
+            mathElement.innerHTML = '<div class="empty-data">' +
+                                    validation.expression +
+                                    '</div>';
+          } else {
+            try {
+              katex.render(validation.expression,mathElement);
+              if (validation.validated) {
+                answerSubId = 'solution_sub_' + validation.index;
+                answerSubElement = document.getElementById(answerSubId);
+                answerSubElement.innerHTML = validation.solution;
+                katex.render(validation.solution, answerSubElement);
+                answerId = 'solution_' + validation.index;
+                answerElement = document.getElementById(answerId);
+                answerElement.style.display = 'block';
+              }
+            } catch(ex) {
+              mathElement.innerHTML = '<div class="error"><div style="font-size:20px;">' +
+                                      validation.expression +
+                                      '</div><div>Math parse error; please check your entry for errors.</div></div>';
+            }
+          }
+        }
+      }
+    }
+  });
+}
+
+doMathCheck();
+setInterval(doMathCheck, 1000);
